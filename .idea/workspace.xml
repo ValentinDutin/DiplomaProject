@@ -7,6 +7,7 @@
     <list default="true" id="acb784ba-c2e3-4a25-95d1-ad8bb9e26c59" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/diplomaDutin/MagneticFieldPotential.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/diplomaDutin/MagneticFieldPotential.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/diplomaDutin/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/diplomaDutin/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MagneticFieldPotential.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MagneticFieldPotential.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
@@ -39,12 +40,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="1798" />
+          <entry key="java" value="2585" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1798" />
+          <entry key="JAVA" value="2585" />
         </counts>
       </usages-collector>
     </session>
@@ -54,17 +55,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+            <state relative-caret-position="10">
+              <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CreateGrid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-306">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="2">
+              <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -78,14 +79,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MagneticFieldPotential.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="613">
-              <caret line="159" column="27" lean-forward="true" selection-start-line="159" selection-start-column="27" selection-end-line="159" selection-end-column="27" />
+            <state relative-caret-position="-1292">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
               <folding>
-                <element signature="e#8020#8021#0" expanded="true" />
-                <element signature="e#8046#8047#0" expanded="true" />
+                <element signature="e#9505#9506#0" expanded="true" />
+                <element signature="e#9531#9532#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -112,10 +113,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/CreateGrid.java" />
         <option value="$PROJECT_DIR$/src/Pair.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/MagneticFieldPotential.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/CreateGrid.java" />
       </list>
     </option>
   </component>
@@ -148,7 +149,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1621824574312" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1622249188264" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -191,7 +192,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.03857791" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -202,8 +202,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.119476266" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.18330605" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3715221" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.032733224" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.09819967" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -232,28 +232,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/MagneticFieldPotential.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1292">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+          <folding>
+            <element signature="e#9505#9506#0" expanded="true" />
+            <element signature="e#9531#9532#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        <state relative-caret-position="10">
+          <caret line="2" column="24" selection-start-line="2" selection-start-column="24" selection-end-line="2" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CreateGrid.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-306">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/MagneticFieldPotential.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="613">
-          <caret line="159" column="27" lean-forward="true" selection-start-line="159" selection-start-column="27" selection-end-line="159" selection-end-column="27" />
-          <folding>
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8046#8047#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="2">
+          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
         </state>
       </provider>
     </entry>

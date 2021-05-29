@@ -19,5 +19,19 @@ public class Main {
             }
             System.out.println();
         }
+        System.out.println("\nExact:");
+        for(int i = 0; i <= N_surface; i++){
+            for(int j = 0; j <= N_inside + N_outside; j++){
+                System.out.format("(%f)   ", mfp.getExactnessSolution()[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println("\nDiscrepancy:");
+        for(int i = 0; i <= N_surface; i++){
+            for(int j = 0; j <= N_inside + N_outside; j++){
+                System.out.format("(%f)   ", Math.abs(mfp.getExactnessSolution()[i][j] - mfp.getPotential()[i][j]));
+            }
+            System.out.println();
+        }
     }
 }

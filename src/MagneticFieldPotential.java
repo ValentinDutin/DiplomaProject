@@ -4,7 +4,7 @@ public class MagneticFieldPotential {
     private int N_surface;
     private int N_sum;
     private double[] S;
-    private double Chi = 0.1;
+    private double Chi = 3.0;
     private double[] localR;
     private double[] localZ;
     private double[] Integral;
@@ -13,7 +13,7 @@ public class MagneticFieldPotential {
     private double[] cUnderK;
     private double[] cAboveK;
     private double epsilon = 0.0001;
-    private double q = 0.6;
+    private double q = 1.6;
     private Pair[][] G;
 
     MagneticFieldPotential(Pair[][] G, int N_inside, int N_outside, int N_surface){
@@ -30,8 +30,11 @@ public class MagneticFieldPotential {
         for(int j = 0; j <= N_sum; j++){
             phi[0][j] = 0.0;
         }
+        double B = 3 / (Chi + 3);
         for(int i = 1; i <= N_surface; i++){
-            phi[i][N_sum] = G[i][N_sum].getSecond();
+            phi[i][N_sum] = G[i][N_sum].getSecond()
+                    - ((1 - B) * G[i][N_sum].getSecond()
+                    / Math.pow(Math.pow(G[i][N_sum].getSecond(), 2) + Math.pow(G[i][N_sum].getFirst(), 2), 1.5));
         }
         for(int i = 1; i <= N_surface; i++){
             for(int j = 0; j <= N_sum - 1; j++){
@@ -72,33 +75,44 @@ public class MagneticFieldPotential {
 
     private void calculateIntegral(){
         for(int i = 1; i <= 5; i++){
-            Integral[i] = S[i] * (1.0 + Chi) * (localR[0] + localR[i] + localR[i+1]) / 6.0;
+            if(Math.pow(localR[i], 2) + Math.pow(localZ[i], 2) > 1
+                    || Math.pow(localR[i+1], 2) + Math.pow(localZ[i+1], 2) > 1
+                    || Math.pow(localR[0], 2) + Math.pow(localZ[0], 2) > 1) {
+                Integral[i] = S[i] * (localR[0] + localR[i] + localR[i + 1]) / 6.0;
+            }
+            else{
+                Integral[i] = S[i] * (1.0 + Chi) * (localR[0] + localR[i] + localR[i + 1]) / 6.0;
+            }
         }
-        Integral[6] = S[6] * (1.0 + Chi) * (localR[0] + localR[6] + localR[1]) / 6.0;
+        if(Math.pow(localR[6], 2) + Math.pow(localZ[6], 2) > 1
+                || Math.pow(localR[1], 2) + Math.pow(localZ[1], 2) > 1
+                || Math.pow(localR[0], 2) + Math.pow(localZ[0], 2) > 1) {
+            Integral[6] = S[6] * (localR[0] + localR[6] + localR[1]) / 6.0;
+        }
+        else{
+            Integral[6] = S[6] * (1.0 + Chi) * (localR[0] + localR[6] + localR[1]) / 6.0;
+        }
     }
 
     private void calculateInsideC(){
-        c[0] = (Math.pow((localZ[2] - localZ[1]), 2) + Math.pow((localR[2] - localR[1]), 2)) / Math.pow(S[1], 2) * Integral[1]
-                + (Math.pow((localZ[3] - localZ[2]), 2) + Math.pow((localR[3] - localR[2]), 2)) / Math.pow(S[2], 2) * Integral[2]
-                + (Math.pow((localZ[4] - localZ[3]), 2) + Math.pow((localR[4] - localR[3]), 2)) / Math.pow(S[3], 2) * Integral[3]
-                + (Math.pow((localZ[5] - localZ[4]), 2) + Math.pow((localR[5] - localR[4]), 2)) / Math.pow(S[4], 2) * Integral[4]
-                + (Math.pow((localZ[6] - localZ[5]), 2) + Math.pow((localR[6] - localR[5]), 2)) / Math.pow(S[5], 2) * Integral[5]
-                + (Math.pow((localZ[1] - localZ[6]), 2) + Math.pow((localR[1] - localR[6]), 2)) / Math.pow(S[6], 2) * Integral[6];
-        c[1] = ((localZ[1] - localZ[6]) * (localZ[6] - localZ[0]) + (localR[1] - localR[6]) * (localR[6] - localR[0])) / Math.pow(S[6], 2) * Integral[6]
-                + ((localZ[2] - localZ[1]) * (localZ[0] - localZ[2]) + (localR[2] - localR[1]) * (localR[0] - localR[2])) / Math.pow(S[1], 2) * Integral[1];
-        c[2] = ((localZ[2] - localZ[1]) * (localZ[1] - localZ[0]) + (localR[2] - localR[1]) * (localR[1] - localR[0])) / Math.pow(S[1], 2) * Integral[1]
-                + ((localZ[3] - localZ[2]) * (localZ[0] - localZ[3]) + (localR[3] - localR[2]) * (localR[0] - localR[3])) / Math.pow(S[2], 2) * Integral[2];
-        c[3] = ((localZ[3] - localZ[2]) * (localZ[2] - localZ[0]) + (localR[3] - localR[2]) * (localR[2] - localR[0])) / Math.pow(S[2], 2) * Integral[2]
-                + ((localZ[4] - localZ[3]) * (localZ[0] - localZ[4]) + (localR[4] - localR[3]) * (localR[0] - localR[4])) / Math.pow(S[3], 2) * Integral[3];
-        c[4] = ((localZ[4] - localZ[3]) * (localZ[3] - localZ[0]) + (localR[4] - localR[3]) * (localR[3] - localR[0])) / Math.pow(S[3], 2) * Integral[3]
-                + ((localZ[5] - localZ[4]) * (localZ[0] - localZ[5]) + (localR[5] - localR[4]) * (localR[0] - localR[5])) / Math.pow(S[4], 2) * Integral[4];
-        c[5] = ((localZ[5] - localZ[4]) * (localZ[4] - localZ[0]) + (localR[5] - localR[4]) * (localR[4] - localR[0])) / Math.pow(S[4], 2) * Integral[4]
-                + ((localZ[6] - localZ[5]) * (localZ[0] - localZ[6]) + (localR[6] - localR[5]) * (localR[0] - localR[6])) / Math.pow(S[5], 2) * Integral[5];
-        c[6] = ((localZ[6] - localZ[5]) * (localZ[5] - localZ[0]) + (localR[6] - localR[5]) * (localR[5] - localR[0])) / Math.pow(S[5], 2) * Integral[5]
-                + ((localZ[1] - localZ[6]) * (localZ[0] - localZ[1]) + (localR[1] - localR[6]) * (localR[0] - localR[1])) / Math.pow(S[6], 2) * Integral[6];
-        for(int i = 0; i < 7; i++){
-            c[i] = Math.abs(c[i]);
-        }
+        c[0] = (Math.pow((localZ[2] - localZ[1]), 2) + Math.pow((localR[2] - localR[1]), 2)) * Integral[1] / Math.pow(S[1], 2)
+                + (Math.pow((localZ[3] - localZ[2]), 2) + Math.pow((localR[3] - localR[2]), 2)) * Integral[2] / Math.pow(S[2], 2)
+                + (Math.pow((localZ[4] - localZ[3]), 2) + Math.pow((localR[4] - localR[3]), 2)) * Integral[3] / Math.pow(S[3], 2)
+                + (Math.pow((localZ[5] - localZ[4]), 2) + Math.pow((localR[5] - localR[4]), 2)) * Integral[4] / Math.pow(S[4], 2)
+                + (Math.pow((localZ[6] - localZ[5]), 2) + Math.pow((localR[6] - localR[5]), 2)) * Integral[5] / Math.pow(S[5], 2)
+                + (Math.pow((localZ[1] - localZ[6]), 2) + Math.pow((localR[1] - localR[6]), 2)) * Integral[6] / Math.pow(S[6], 2);
+        c[1] = ((localZ[1] - localZ[6]) * (localZ[6] - localZ[0]) + (localR[1] - localR[6]) * (localR[6] - localR[0])) * Integral[6] / Math.pow(S[6], 2)
+                + ((localZ[2] - localZ[1]) * (localZ[0] - localZ[2]) + (localR[2] - localR[1]) * (localR[0] - localR[2])) * Integral[1] / Math.pow(S[1], 2);
+        c[2] = ((localZ[2] - localZ[1]) * (localZ[1] - localZ[0]) + (localR[2] - localR[1]) * (localR[1] - localR[0])) * Integral[1] / Math.pow(S[1], 2)
+                + ((localZ[3] - localZ[2]) * (localZ[0] - localZ[3]) + (localR[3] - localR[2]) * (localR[0] - localR[3])) * Integral[2] / Math.pow(S[2], 2);
+        c[3] = ((localZ[3] - localZ[2]) * (localZ[2] - localZ[0]) + (localR[3] - localR[2]) * (localR[2] - localR[0])) * Integral[2] / Math.pow(S[2], 2)
+                + ((localZ[4] - localZ[3]) * (localZ[0] - localZ[4]) + (localR[4] - localR[3]) * (localR[0] - localR[4])) * Integral[3] / Math.pow(S[3], 2);
+        c[4] = ((localZ[4] - localZ[3]) * (localZ[3] - localZ[0]) + (localR[4] - localR[3]) * (localR[3] - localR[0])) * Integral[3] / Math.pow(S[3], 2)
+                + ((localZ[5] - localZ[4]) * (localZ[0] - localZ[5]) + (localR[5] - localR[4]) * (localR[0] - localR[5])) * Integral[4] / Math.pow(S[4], 2);
+        c[5] = ((localZ[5] - localZ[4]) * (localZ[4] - localZ[0]) + (localR[5] - localR[4]) * (localR[4] - localR[0])) * Integral[4] / Math.pow(S[4], 2)
+                + ((localZ[6] - localZ[5]) * (localZ[0] - localZ[6]) + (localR[6] - localR[5]) * (localR[0] - localR[6])) * Integral[5] / Math.pow(S[5], 2);
+        c[6] = ((localZ[6] - localZ[5]) * (localZ[5] - localZ[0]) + (localR[6] - localR[5]) * (localR[5] - localR[0])) * Integral[5] / Math.pow(S[5], 2)
+                + ((localZ[1] - localZ[6]) * (localZ[0] - localZ[1]) + (localR[1] - localR[6]) * (localR[0] - localR[1])) * Integral[6] / Math.pow(S[6], 2);
     }
 
     private void calculateCAboveK(){
@@ -112,9 +126,6 @@ public class MagneticFieldPotential {
                 + ((localZ[6] - localZ[5]) * (localZ[0] - localZ[6]) + (localR[6] - localR[5]) * (localR[0] - localR[6])) / Math.pow(S[5], 2) * Integral[5];
         cAboveK[6] = ((localZ[6] - localZ[5]) * (localZ[5] - localZ[0]) + (localR[6] - localR[5]) * (localR[5] - localR[0])) / Math.pow(S[5], 2) * Integral[5]
                 + ((localZ[1] - localZ[6]) * (localZ[0] - localZ[1]) + (localR[1] - localR[6]) * (localR[0] - localR[1])) / Math.pow(S[6], 2) * Integral[6];
-        for(int i = 0; i < 7; i++){
-            cAboveK[i] = Math.abs(cAboveK[i]);
-        }
     }
 
 
@@ -129,9 +140,6 @@ public class MagneticFieldPotential {
         cUnderK[5] = ((localZ[6] - localZ[5]) * (localZ[0] - localZ[6]) + (localR[6] - localR[5]) * (localR[0] - localR[6])) / Math.pow(S[5], 2) * Integral[5];
         cUnderK[6] = ((localZ[6] - localZ[5]) * (localZ[5] - localZ[0]) + (localR[6] - localR[5]) * (localR[5] - localR[0])) / Math.pow(S[5], 2) * Integral[5]
                 + ((localZ[1] - localZ[6]) * (localZ[0] - localZ[1]) + (localR[1] - localR[6]) * (localR[0] - localR[1])) / Math.pow(S[6], 2) * Integral[6];
-        for(int i = 0; i < 7; i++){
-            cUnderK[i] = Math.abs(cUnderK[i]);
-        }
     }
 
     private void calculateCforK(){
@@ -142,9 +150,6 @@ public class MagneticFieldPotential {
         cForK[5] = ((localZ[6] - localZ[5]) * (localZ[0] - localZ[6]) + (localR[6] - localR[5]) * (localR[0] - localR[6])) / Math.pow(S[5], 2) * Integral[5];
         cForK[6] = ((localZ[6] - localZ[5]) * (localZ[5] - localZ[0]) + (localR[6] - localR[5]) * (localR[5] - localR[0])) / Math.pow(S[5], 2) * Integral[5]
                 + ((localZ[1] - localZ[6]) * (localZ[0] - localZ[1]) + (localR[1] - localR[6]) * (localR[0] - localR[1])) / Math.pow(S[6], 2) * Integral[6];
-        for(int i = 0; i < 7; i++){
-            cForK[i] = Math.abs(cForK[i]);
-        }
     }
 
 
@@ -196,7 +201,7 @@ public class MagneticFieldPotential {
             localR[5] = G[i - 1][j].getFirst();
             localZ[5] = G[i - 1][j].getSecond();
         }
-        if(i - 1 >= 0 && j+1 <= N_sum){
+        if(i - 1 >= 0 && j + 1 <= N_sum){
             localR[6] = G[i - 1][j + 1].getFirst();
             localZ[6] = G[i - 1][j + 1].getSecond();
         }
@@ -233,37 +238,37 @@ public class MagneticFieldPotential {
                     calculateIntegral();
                     calculateInsideC();
                     prevPhi[i][j] = phi[i][j];
-                    phi[i][j] = (
+                    phi[i][j] = -(
                             c[2] * phi[i + 1][j] + c[3] * phi[i + 1][j - 1] + c[4] * phi[i][j - 1]
                                     + c[5] * phi[i - 1][j] + c[6] * phi[i - 1][j + 1]
                                     + c[1] * phi[i][j + 1]
                     ) / c[0];
-                    //phi[i][j] = (1 - q) * prevPhi[i][j] + q * phi[i][j];
+                    phi[i][j] = (1 - q) * prevPhi[i][j] + q * phi[i][j];
                 }
                 newLocalCoord(N_surface, j);
                 calculateS();
                 calculateIntegral();
                 calculateCAboveK();
                 prevPhi[N_surface][j] = phi[N_surface][j];
-                phi[N_surface][j] = (
+                phi[N_surface][j] = -(
                         cAboveK[4] * phi[N_surface][j - 1]
                                 + cAboveK[5] * phi[N_surface - 1][j]
                                 + cAboveK[6] * phi[N_surface - 1][j + 1]
                                 + cAboveK[1] * phi[N_surface][j + 1]
                 ) / cAboveK[0];
-                //phi[N_surface][j] = (1 - q) * prevPhi[N_surface][j] + q * phi[N_surface][j];
+                phi[N_surface][j] = (1 - q) * prevPhi[N_surface][j] + q * phi[N_surface][j];
             }
-            for (int i = N_surface - 1; i >= 1; i--) {
+            for (int i = 1; i <= N_surface - 1; i++) {
                 newLocalCoord(i, 0);
                 calculateS();
                 calculateIntegral();
                 calculateCUnderK();
                 prevPhi[i][0] = phi[i][0];
-                phi[i][0] = (
+                phi[i][0] = -(
                         cUnderK[2] * phi[i + 1][0] + cUnderK[5] * phi[i - 1][0] + cUnderK[6] * phi[i - 1][1]
                                 + cUnderK[1] * phi[i][1]
                 ) / cUnderK[0];
-                //phi[i][0] = (1 - q) * prevPhi[i][0] + q * phi[i][0];
+                phi[i][0] = (1 - q) * prevPhi[i][0] + q * phi[i][0];
             }
             int indexK = N_surface;
             newLocalCoord(indexK, 0);
@@ -271,16 +276,16 @@ public class MagneticFieldPotential {
             calculateIntegral();
             calculateCforK();
             prevPhi[indexK][0] = phi[indexK][0];
-            phi[indexK][0] = (
+            phi[indexK][0] = -(
                     cForK[5] * phi[indexK - 1][0] + cForK[6] * phi[indexK - 1][1]
                             + cForK[1] * phi[indexK][1]
             ) / cForK[0];
-            //phi[indexK][0] = (1 - q) * prevPhi[indexK][0] + q * phi[indexK][0];
+            phi[indexK][0] = (1 - q) * prevPhi[indexK][0] + q * phi[indexK][0];
             isCorrectResult = true;
             count++;
             for(int i = 1; i <= N_surface; i++){
                 for(int j = 0; j <= N_sum - 1; j++){
-                    if(Math.abs(phi[i][j] - prevPhi[i][j]) >= epsilon * q){
+                    if(Math.abs(phi[i][j] - prevPhi[i][j]) >= epsilon /** q*/){
                         isCorrectResult = false;
                         //break;
                     }
@@ -291,6 +296,24 @@ public class MagneticFieldPotential {
             }
         }
         System.out.println("count = " + count);
+    }
+
+    public double[][] getExactnessSolution(){
+        double[][] result = new double[N_surface + 1][N_sum + 1];
+        double B = 3 / (3 + Chi);
+        for(int i = 0; i <= N_surface; i++){
+            for(int j = 0; j <= N_sum; j++){
+                if(Math.pow(G[i][j].getSecond(), 2) + Math.pow(G[i][j].getFirst(), 2) <= 1) {
+                    result[i][j] = B * G[i][j].getSecond();
+                }
+                else{
+                    result[i][j] = G[i][j].getSecond()
+                            - ((1 - B) * G[i][j].getSecond()
+                            / Math.pow(Math.pow(G[i][j].getSecond(), 2) + Math.pow(G[i][j].getFirst(), 2), 1.5));
+                }
+            }
+        }
+        return result;
     }
 }
 
